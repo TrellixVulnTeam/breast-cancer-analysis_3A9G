@@ -17,11 +17,11 @@ pd.set_option('display.max_colwidth', None)
 X = dataset.iloc[:, 1:31].values
 Y = dataset.iloc[:, 31].values
 
-dataset.columns = ["id","diagnosis","radius_mean","texture_mean","perimeter_mean","area_mean","smoothness_mean","compactness_mean"
+dataset.columns = ["id","radius_mean","texture_mean","perimeter_mean","area_mean","smoothness_mean","compactness_mean"
     ,"concavity_mean","concave_points_mean","symmetry_mean","fractal_dimension_mean","radius_se","texture_se","perimeter_se","area_se",
                    "smoothness_se","compactness_se","concavity_se",'concave_points_se',"symmetry_se","fractal_dimension_se",
                    'radius_worst',"texture_worst","perimeter_worst","area_worst","smoothness_worst","compactness_worst","concavity_worst",
-                   "concave_points_worst","symmetry_worst","fractal_dimension_worst"]
+                   "concave_points_worst","symmetry_worst","fractal_dimension_worst", "diagnosis"]
 
 dataframe = pd.DataFrame(Y)
 
@@ -53,11 +53,14 @@ correct_predictions = cm[0, 0] + cm[1, 1]
 total_number_predictions = cm[0, 0] + cm[0, 1] + cm[1, 0] + cm[1, 1]
 accuracy = correct_predictions / total_number_predictions
 
+print("Modelo de regresion logistica")
+print("------------------------------")
 print(f'Verdadero positivo: {cm[0,0]}')
 print(f'Falso positivo: {cm[0,1]}')
 print(f'Falso negativo: {cm[1, 0]}')
 print(f'Verdadero negativo: {cm[1, 1]}')
 print(f'Precision del modelo: {accuracy*100} %')
+print("===============================\n")
 
 # Generacion de prediccion sin skills
 ns_probs = [0 for _ in range(len(Y_test))]
@@ -69,6 +72,8 @@ lr_probs = lr_probs[:, 1]
 # Calculo de scores para area debajo de la curva(AUC)
 ns_auc = roc_auc_score(Y_test, ns_probs)
 lr_auc = roc_auc_score(Y_test, lr_probs)
+print('Calculo de ROC y AUC')
+print("---------------------")
 print('No Skill: ROC AUC=%.3f' % (ns_auc))
 print('Logistic: ROC AUC=%.3f' % (lr_auc))
 
